@@ -58,7 +58,7 @@ void main (void)
 			Delay( delay*3 );
 			memory = 0xFF;
 			dec=0x00;
-			for (a=8; a>=1; a--) // 0000 -> o000 -> oo00 -> ooo0 -> oooo
+			for (a=8; a>=1; a--) // 0000 -> 000o -> 00oo -> 0ooo -> oooo
 			{
 				Delay( delay );
 				dec = dec*0x02+0x01;
