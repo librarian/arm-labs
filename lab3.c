@@ -27,7 +27,7 @@ void vicInit(void)
 
 	VICINTENCLEAR	= 0xFFFFFFFF; //Инициализация VIC
 	VICADDRESS		= 0;
-	VICINTSELECT	= 0;
+	VICINTSELECT	= 0; // IRQ interrupts, not FIQ
 
 	for ( i = 0; i < VIC_SIZE; i++ ) //Начальная установка в 0 векторов
 	{
@@ -41,16 +41,20 @@ void irqAdd( DWORD IntNumber, void *HandlerAddr, DWORD Priority )
 {
 	DWORD *vect_addr;
 	DWORD *vect_cntl;
-
+	// from vicInit by default all vectors cleared.
 	VICINTENCLEAR = 1 << IntNumber; //Запрет прерывания на время настройки
+	// "<< IntNumber" for what?
+	// Maybe it is better
+	// VICINTENCLEAR = 1, and do not use <<
 	// Поиск первого свободного VIC адреса
-	vect_addr = (DWORD *)(VIC_BASE_ADDR + VECT_ADDR_INDEX + IntNumber * 4);
-	vect_cntl = (DWORD *)(VIC_BASE_ADDR + VECT_CNTL_INDEX + IntNumber * 4);
+	vect_addr = (DWORD *) (VIC_BASE_ADDR + VECT_ADDR_INDEX + IntNumber * 4);
+	vect_cntl = (DWORD *) (VIC_BASE_ADDR + VECT_CNTL_INDEX + IntNumber * 4);
 	//Установка вектора прерывания
-	*vect_addr = (DWORD)HandlerAddr;
+	*vect_addr = (DWORD) HandlerAddr;
 	*vect_cntl = Priority;
 	//Разрешение прерывания
 	VICINTENABLE = 1 << IntNumber;
+	// VICINTENABLE = 1
 }
 
 void irqInit()
@@ -119,8 +123,4 @@ __irq __nested __arm void irqBtnCnt()
 	IO0INTCLR  = 0xFFFFFFFF;//Очистка прерываний от GPIO PORT0
 	VICADDRESS = 0;
 }
-
-
-
-
 
