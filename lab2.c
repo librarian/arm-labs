@@ -6,12 +6,12 @@
 //      it under the terms of the GNU General Public License as published by
 //      the Free Software Foundation; either version 2 of the License, or
 //      (at your option) any later version.
-//      
+//
 //      This program is distributed in the hope that it will be useful,
 //      but WITHOUT ANY WARRANTY; without even the implied warranty of
 //      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //      GNU General Public License for more details.
-//      
+//
 //      You should have received a copy of the GNU General Public License
 //      along with this program; if not, write to the Free Software
 //      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
@@ -26,9 +26,9 @@ int BTN_cur, BTN_prev; // pin btn status
 void main (void)
 {
 	SCS |= 0x01;
-	FIO0DIR = 0x00000000; 
-	FIO2DIR = 0x00FF; 
-	FIO2MASK = 0; 
+	FIO0DIR = 0x00000000;
+	FIO2DIR = 0x00FF;
+	FIO2MASK = 0;
 	while (1)//Loop forever
 	{
 		int a;
@@ -38,8 +38,8 @@ void main (void)
 		int memory; // variable that set from which step we will begin scale;
 		int speed;
 		int delay;
-		left = GetBTNState(1);
-		top	= GetBTNState(2);
+		left = getBTNState(1);
+		top	= getBTNState(2);
 		if(!memory) memory = 1; //in the beggining memory os not set
 		if(!speed) speed = 1;
 		if (left) // btn 1 pressed
@@ -48,14 +48,14 @@ void main (void)
 			while (a <= 9) // infinite loop, really
 			{
 				status = GetEncState(); // take status of encoder
-				top	= GetBTNState(2); // stop or not?
+				top	= getBTNState(2); // stop or not?
 				if (status == 1) speed++; // speed increase
 				if (status == -1) speed--; // speed decrease
 				delay = 1000*speed; // set delay between taking status, turning on lights, etc
 				// BUG:
-				// It is better to realise getting status on interrupts, because 
+				// It is better to realise getting status on interrupts, because
 				// we will get it only when delay ended
-				FIO2PIN = Scale(a); 
+				FIO2PIN = Scale(a);
 				Delay(delay);
 				if (top) // btn 2 pressed
 				{
@@ -98,14 +98,14 @@ int GetEncState()
 							//которые будут предыдущими в следующем цикле проверки
 	ENCB_prev = ENCB_cur;
 
-	return state;	//Возвращаем состояние 0 если энкодер не вращается, 
+	return state;	//Возвращаем состояние 0 если энкодер не вращается,
 					//1 если вращается по часовой и -1 если против часовой
 }
 
 int getBTNState(int btn)
 {
 	int state = 0;
-	switch (btn) 
+	switch (btn)
 	{
 		case 1:
 			BTN_cur = FIO0PIN & 0x0020; // button 1
@@ -115,13 +115,13 @@ int getBTNState(int btn)
 			BTN_cur = FIO0PIN & 0x0080; // button 3
 		case 4:
 			BTN_cur = FIO0PIN & 0x0200; // button 4
-		default: 
+		default:
 			BTN_cur = FIO0PIN & 0x0020; // default button 1
 	}
 	if( BTN_cur != BTN_prev) // state changed
 	{
 		if( !BTN_cur ) // if zero, button pressed
-			state = 1; 
+			state = 1;
 	}
 	BTN_prev = BTN_cur;	 // remember current button state
 	return state; // 0 if do not pressed, 1 if pressed
@@ -143,7 +143,7 @@ int Scale(int counter)
 
 double power(double x, long n) //rescursive power() function from wiki
 {
-	double tmp; 
+	double tmp;
 	if(n == 0) return 1;
 	if(n < 0) return power ( 1 / x, -n);
 	if(n % 2) return x * power (x, n - 1);
