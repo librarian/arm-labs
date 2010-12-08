@@ -21,8 +21,8 @@
 
 static void Delay(unsigned ms)
 {
-	unsigned t0 = tick_counter; 
-	while (tick_counter - t0 < ms) ;
+	ms = ms/3000; 
+	while (ms != 0 )  { ms--; };
 }
 
 void main (void)
@@ -60,9 +60,6 @@ void main (void)
 				memory = memory - dec;
 				FIO2PIN = memory;
 			}
-			Delay( delay );
-			FIO2PIN = 0x00;
-			
 		} else if (task == 8)
 		{
 			int memory;
@@ -83,8 +80,6 @@ void main (void)
 				dec = dec*0x02+0x01;
 				FIO2PIN = memory-dec;
 			}
-			Delay( delay );
-			FIO2PIN = 0x00;
 		} else if (task == 9)
 		{ 
 			int memory;
