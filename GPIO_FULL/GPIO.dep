@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>3270147365</fileChecksum>
+  <configuration>
+    <name>Flash_Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\Timers.c</file>
+      <file>$PROJ_DIR$\irq.c</file>
+      <file>$PROJ_DIR$\ExtInterrupts.c</file>
+      <file>$PROJ_DIR$\icf\LPC2368_flash.icf</file>
+      <file>$PROJ_DIR$\includes.h</file>
+      <file>$TOOLKIT_DIR$\inc\NXP\iolpc2368.h</file>
+      <file>$TOOLKIT_DIR$\inc\io_macros.h</file>
+      <file>$PROJ_DIR$\uart.h</file>
+      <file>$PROJ_DIR$\irq.h</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\main.o</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\cstartup.s</file>
+      <file>$PROJ_DIR$\uart.c</file>
+      <file>$PROJ_DIR$\WH1602D.c</file>
+      <file>$PROJ_DIR$\..\Common\src\cstartup.s</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\GPIO.pbd</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\target.o</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\irq.o</file>
+      <file>$PROJ_DIR$\Timers.h</file>
+      <file>$PROJ_DIR$\..\Common\inc\LPC230x.h</file>
+      <file>$PROJ_DIR$\ExtInterrupts.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\irq.pbi</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\Timers.o</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\uarttest.o</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\DA136A.pbi</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\MotherBoard.pbd</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\Coordinator.pbd</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\..\Common\inc\type.h</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\ExtInterrupts.pbi</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\WH1602D.o</file>
+      <file>$PROJ_DIR$\DA136A.h</file>
+      <file>$PROJ_DIR$\..\Common\inc\irq.h</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\uarttest.pbi</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\uart.pbd</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\ExtInterrupts.o</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\uart.o</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\DA136A.o</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Config_Normal.h</file>
+      <file>$PROJ_DIR$\Flash_Debug\Exe\uart.out</file>
+      <file>$TOOLKIT_DIR$\inc\stdio.h</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\cstartup.o</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
+      <file>$TOOLKIT_DIR$\inc\ycheck.h</file>
+      <file>$PROJ_DIR$\..\Common\src\irq.c</file>
+      <file>$TOOLKIT_DIR$\lib\shs_l.a</file>
+      <file>$PROJ_DIR$\type.h</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\uart.pbi</file>
+      <file>$TOOLKIT_DIR$\lib\rt4t_al.a</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\WH1602D.pbi</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\target.pbi</file>
+      <file>$TOOLKIT_DIR$\lib\dl4t_tl_in.a</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Flash_Debug\Obj\Timers.pbi</file>
+      <file>$PROJ_DIR$\uarttest.c</file>
+      <file>$PROJ_DIR$\..\Common\inc\target.h</file>
+      <file>$PROJ_DIR$\bit.h</file>
+      <file>$PROJ_DIR$\WH1602D.h</file>
+      <file>$PROJ_DIR$\..\Common\src\target.c</file>
+      <file>$PROJ_DIR$\DA136A.c</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Timers.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 10 48 5 6 45 42 47 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 10 48 5 6 45 42 47 43 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\irq.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 24</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 10 48 5 6 45 42 47 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 10 48 5 6 45 42 47 43 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ExtInterrupts.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 39</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 10 48 5 6 45 42 47 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 10 48 5 6 45 42 47 43 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 57</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 10 48 5 6 45 42 47 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 10 48 5 6 45 42 47 43 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\cstartup.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 46</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\uart.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 52</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 40</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 10 48 5 6 45 42 47 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 10 48 5 6 45 42 47 43 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\WH1602D.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 54</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 33</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 10 48 5 6 45 42 47 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 10 48 5 6 45 42 47 43 23 30 18 36 51 8 7 61 62 22 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Common\src\cstartup.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 46</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Flash_Debug\Obj\GPIO.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 32 58 54 24 57 52</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Flash_Debug\Obj\MotherBoard.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 24 57 52</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Flash_Debug\Obj\Coordinator.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 27 32 58 54 24 57 52</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 44</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Flash_Debug\Obj\uart.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 24 55 52 37</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Flash_Debug\Exe\uart.out</name>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 3 39 25 33 46 19 9 40 50 53 56</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Common\src\irq.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 24</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21 31 35</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 21 31 35</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\uarttest.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 37</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 26</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21 31 35 60 7</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 21 31 35 60 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Common\src\target.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 55</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21 31 35 60 10 48</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 21 31 35 60 10 48</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\DA136A.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 41</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 10 48 5 6 45 42 47 23 30 18 36 51 8 7 61 62 34 22 20</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 10 48 5 6 45 42 47 43 23 30 18 36 51 8 7 61 62 34 22 20</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>RAM_Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\Timers.c</file>
+      <file>$PROJ_DIR$\irq.c</file>
+      <file>$PROJ_DIR$\ExtInterrupts.c</file>
+      <file>$PROJ_DIR$\includes.h</file>
+      <file>$TOOLKIT_DIR$\inc\NXP\iolpc2368.h</file>
+      <file>$TOOLKIT_DIR$\inc\io_macros.h</file>
+      <file>$PROJ_DIR$\uart.h</file>
+      <file>$PROJ_DIR$\irq.h</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\cstartup.s</file>
+      <file>$PROJ_DIR$\uart.c</file>
+      <file>$PROJ_DIR$\WH1602D.c</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\icf\LPC2368_RAM.icf</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\main.o</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\cstartup.o</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\WH1602D.o</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\GPIO.pbd</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\Timers.o</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\irq.o</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\Timers.pbi</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\WH1602D.pbi</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\irq.pbi</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\ExtInterrupts.o</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\uart.o</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\ExtInterrupts.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\Timers.h</file>
+      <file>$PROJ_DIR$\ExtInterrupts.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$PROJ_DIR$\RAM_Debug\Exe\uart.out</file>
+      <file>$PROJ_DIR$\RAM_Debug\Obj\uart.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Config_Normal.h</file>
+      <file>$TOOLKIT_DIR$\inc\stdio.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
+      <file>$TOOLKIT_DIR$\inc\ycheck.h</file>
+      <file>$TOOLKIT_DIR$\lib\shs_l.a</file>
+      <file>$PROJ_DIR$\type.h</file>
+      <file>$TOOLKIT_DIR$\lib\rt4t_al.a</file>
+      <file>$TOOLKIT_DIR$\lib\dl4t_tl_in.a</file>
+      <file>$PROJ_DIR$\bit.h</file>
+      <file>$PROJ_DIR$\WH1602D.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Timers.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 8 39 4 5 37 35 38 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 8 39 4 5 37 35 38 36 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\irq.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 8 39 4 5 37 35 38 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 8 39 4 5 37 35 38 36 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ExtInterrupts.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 26</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 24</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 8 39 4 5 37 35 38 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 8 39 4 5 37 35 38 36 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 13</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 15</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 8 39 4 5 37 35 38 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 8 39 4 5 37 35 38 36 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\cstartup.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 16</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\uart.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 8 39 4 5 37 35 38 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 8 39 4 5 37 35 38 36 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\WH1602D.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 22</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 8 39 4 5 37 35 38 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 8 39 4 5 37 35 38 36 30 33 27 34 41 7 6 44 45 29 28</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\RAM_Debug\Obj\GPIO.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 26 21 22 23 13 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\RAM_Debug\Exe\uart.out</name>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 14 24 19 17 16 20 15 25 40 42 43</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 31</file>
+        </tool>
+      </outputs>
+    </file>
+  </configuration>
+</project>
+
+
