@@ -1,126 +1,94 @@
-// Lab3 irq
-// Copyright (C) 2010 Nikita A Menkovich menkovich@gmail.com
-// git repository can be found on: https://github.com/librarian/arm-labs
-//
-//      This program is free software; you can redistribute it and/or modify
-//      it under the terms of the GNU General Public License as published by
-//      the Free Software Foundation; either version 2 of the License, or
-//      (at your option) any later version.
-//
-//      This program is distributed in the hope that it will be useful,
-//      but WITHOUT ANY WARRANTY; without even the implied warranty of
-//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//      GNU General Public License for more details.
-//
-//      You should have received a copy of the GNU General Public License
-//      along with this program; if not, write to the Free Software
-//      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//      MA 02110-1301, USA.
-
 #include "includes.h"
 #include "irq.h"
 
-void vicInit(void)
-{
-	DWORD i = 0;
-	DWORD *vect_addr, *vect_cntl;
+int a = 0x00;
 
-	VICINTENCLEAR	= 0xFFFFFFFF; //РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ VIC
-	VICADDRESS		= 0;
-	VICINTSELECT	= 0; // IRQ interrupts, not FIQ
 
-	for ( i = 0; i < VIC_SIZE; i++ ) //РќР°С‡Р°Р»СЊРЅР°СЏ СѓСЃС‚Р°РЅРѕРІРєР° РІ 0 РІРµРєС‚РѕСЂРѕРІ
-	{
-		vect_addr = (DWORD *)(VIC_BASE_ADDR + VECT_ADDR_INDEX + i * 4);
-		vect_cntl = (DWORD *)(VIC_BASE_ADDR + VECT_CNTL_INDEX + i * 4);
-		*vect_addr = 0x0;
-		*vect_cntl = 0xF;
-	}
-}
-void irqAdd( DWORD IntNumber, void *HandlerAddr, DWORD Priority )
+void InitVIC(void) 
 {
-	DWORD *vect_addr;
-	DWORD *vect_cntl;
-	// from vicInit by default all vectors cleared.
-	VICINTENCLEAR = 1 << IntNumber; //Р—Р°РїСЂРµС‚ РїСЂРµСЂС‹РІР°РЅРёСЏ РЅР° РІСЂРµРјСЏ РЅР°СЃС‚СЂРѕР№РєРё
-	// "<< IntNumber" for what?
-	// Maybe it is better
-	// VICINTENCLEAR = 1, and do not use <<
-	// РџРѕРёСЃРє РїРµСЂРІРѕРіРѕ СЃРІРѕР±РѕРґРЅРѕРіРѕ VIC Р°РґСЂРµСЃР°
-	vect_addr = (DWORD *) (VIC_BASE_ADDR + VECT_ADDR_INDEX + IntNumber * 4);
-	vect_cntl = (DWORD *) (VIC_BASE_ADDR + VECT_CNTL_INDEX + IntNumber * 4);
-	//РЈСЃС‚Р°РЅРѕРІРєР° РІРµРєС‚РѕСЂР° РїСЂРµСЂС‹РІР°РЅРёСЏ
-	*vect_addr = (DWORD) HandlerAddr;
-	*vect_cntl = Priority;
-	//Р Р°Р·СЂРµС€РµРЅРёРµ РїСЂРµСЂС‹РІР°РЅРёСЏ
-	VICINTENABLE = 1 << IntNumber;
-	// VICINTENABLE = 1
+  DWORD i = 0;
+  DWORD *vect_addr, *vect_cntl;
+	
+  VICINTENCLEAR  = 0xFFFFFFFF; //Инициализация VIC
+  VICADDRESS     = 0;
+  VICINTSELECT   = 0;
+	
+  for(i = 0; i < VIC_SIZE; i++) //Начальная установка в 0 векторов 
+  {
+    vect_addr = (DWORD *)(VIC_BASE_ADDR + VECT_ADDR_INDEX + i * 4);
+    vect_cntl = (DWORD *)(VIC_BASE_ADDR + VECT_CNTL_INDEX + i * 4);
+    *vect_addr = 0x0;	
+    *vect_cntl = 0xF;
+  }
 }
 
-void irqInit()
+void InstallIRQ(DWORD IntNumber, void *HandlerAddr, DWORD Priority)
 {
-	IO0INTENF = 0x0020; //РџСЂРµСЂС‹РІР°РЅРёРµ РїРѕ СЃСЂРµР·Сѓ - РєРЅРѕРїРєР° РЅР° РїРѕСЂС‚Сѓ P0.5
+  DWORD *vect_addr;
+  DWORD *vect_cntl;
+	
+  VICINTENCLEAR = 1 << IntNumber; //Запрет прерывания на время настройки
+  // Поиск первого свободного VIC адреса
+  vect_addr = (DWORD *)(VIC_BASE_ADDR + VECT_ADDR_INDEX + IntNumber * 4);
+  vect_cntl = (DWORD *)(VIC_BASE_ADDR + VECT_CNTL_INDEX + IntNumber * 4);
+  // Установка вектора прерывания
+  *vect_addr = (DWORD)HandlerAddr;
+  *vect_cntl = Priority;
+  // Разрешение прерывания
+  VICINTENABLE = 1 << IntNumber;
+}
+////////////////////////изменяемое//////////////////////
 
-	//Р’РЅРµС€РЅРµРµ РїСЂРµСЂС‹РІР°РЅРёРµ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РЅР° EINT3
-	irqAdd( EINT3_INT, (void *)irqBtn, 0x02 );
+
+__irq __nested __arm void ExternalInterruptsHandler3(void)
+{  
+  if(IO0INTSTATF & 0x0040) // Если прерывание вызвано нажатием на вторую кнопку
+  {
+    FIO2PIN = ++a;// Включить светодиоды
+  }
+   if(IO0INTSTATF & 0x0080) // Если прерывание вызвано нажатием на вторую кнопку
+  {
+    FIO2PIN = ++a;// Включить светодиоды
+  }
+  if(IO0INTSTATF & 0x0200) // Если прерывание вызвано нажатием на вторую кнопку
+  {
+    FIO2PIN = ++a;// Включить светодиоды
+  }
+   if(IO0INTSTATF & 0x0020) // Если прерывание вызвано нажатием на первую кнопку
+  { a= 0x00;
+    FIO2PIN = a;        // Включить все светодиоды 
+  }
+ 
+  IO0INTCLR  = 0xFFFFFFFF; // Очистка прерываний от GPIO PORT0
+  VICADDRESS = 0;
 }
 
-__irq __nested __arm void irqBtn()
-{
-	int inc;
-	switch(IO0INTSTATF) {
-		case 0x0020:
-			inc = 0x01;
-		case 0x0040:
-			inc = 0x02;
-		case 0x0080:
-			inc = 0x04;
-		case 0x0200:
-			inc = 0x08;
-		default:
-			FIO2PIN = 0x00;
-	}
-	FIO2PIN = FIO2PIN+inc;
-
-	IO0INTCLR  = 0xFFFFFFFF;//РћС‡РёСЃС‚РєР° РїСЂРµСЂС‹РІР°РЅРёР№ РѕС‚ GPIO PORT0
-	VICADDRESS = 0;
+void InitExternalInterrupts(void)
+{   
+  IO0INTENF = 0x0020 | 0x0040| 0x0080| 0x0200; // Прерывание по срезу - кнопка на порту P0.5 или P0.6
+  
+  // Внешнее прерывание устанавливается на EINT3
+  InstallIRQ(EINT3_INT, (void *)ExternalInterruptsHandler3, 0x02);
 }
 
-int main (void)
-{
-	SCS |= 0x20;	// Р Р°Р·СЂРµС€РёС‚СЊ РіРµРЅРµСЂР°С‚РѕСЂ СЃ РєРІР°СЂС†РµРІС‹Рј СЂРµР·РѕРЅР°С‚РѕСЂРѕРј 12РњР“С†
-	while( !(SCS & 0x40) );	//РџРѕРґРѕР¶РґР°С‚СЊ СЃС‚Р°Р±РёР»РёР·Р°С†РёРё С‡Р°СЃС‚РѕС‚С‹ РіРµРЅРµСЂР°С‚РѕСЂР°
+int main(void)
+{   
+  SCS |= 0x20;	          // Разрешить генератор с кварцевым резонатором 12МГц
+  while( !(SCS & 0x40) ); // Подождать стабилизации частоты генератора
 
-	// РќР°СЃС‚СЂРѕРёС‚СЊ РїРѕСЂС‚
-	SCS |= 0x01; //Р Р°Р·СЂРµС€РёС‚СЊ Р±С‹СЃС‚СЂС‹Р№ РІРІРѕРґ/РІС‹РІРѕРґ
-	FIO2DIR = 0x00FF; // Р‘РёС‚С‹ 0-7 РїРѕСЂС‚Р° 2 РЅР° РІС‹РІРѕРґ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ СЃРІРµС‚РѕРґРёРѕРґР°РјРё
-	FIO2MASK = 0; //Р’СЃРµ СЂР°Р·СЂСЏРґС‹ РїРѕСЂС‚Р° 2 СЂР°Р±РѕС‚Р°СЋС‚ РІ Р±С‹СЃС‚СЂРѕРј СЂРµР¶РёРјРµ
+  // Настроить порт
+  SCS |= 0x01;      // Разрешить быстрый ввод/вывод
+  FIO2DIR = 0x00FF; // Биты 0-7 порта 2 на вывод для управления светодиодами
+  FIO2MASK = 0;     // Все разряды порта 2 работают в быстром режиме
 
-	FIO2PIN = 0x00; // Р’С‹РєР»СЋС‡РёС‚СЊ СЃРІРµС‚РѕРґРёРѕРґС‹
+  FIO2PIN = 0x00;   // Выключить светодиоды
+   	
+  InitVIC();                // Инициализация системы прерываний
+  InitExternalInterrupts(); // Инициализация внешних прерываний
 
-	vicInit(); //РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃРёСЃС‚РµРјС‹ РїСЂРµСЂС‹РІР°РЅРёР№
-	irqInit(); //РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РІРЅРµС€РЅРёС… РїСЂРµСЂС‹РІР°РЅРёР№
-
-	while (1)//Loop forever
-	{
-		//РќРёС‡РµРіРѕ РЅРµ РґРµР»Р°РµРј - РІСЃРµ РїСЂРѕРёСЃС…РѕРґРёС‚ РІ С„СѓРЅРєС†РёРё РѕР±СЂР°Р±РѕС‚РєРё РїСЂРµСЂС‹РІР°РЅРёСЏ
-	}
-	return 0;
+  while(1) // Loop forever
+  {		              
+    // Ничего не делаем - все происходит в функции обработки прерывания
+  }
+  return 0;
 }
-
-__irq __nested __arm void irqBtnCnt()
-{
-	int counter, i, display;
-	if(!counter) counter = 0;
-	switch(IO0INTSTATF) {
-		case 0x0020:
-			counter = 0;
-		default:
-			counter++;
-	}
-	FIO2PIN = counter;
-
-	IO0INTCLR  = 0xFFFFFFFF;//РћС‡РёСЃС‚РєР° РїСЂРµСЂС‹РІР°РЅРёР№ РѕС‚ GPIO PORT0
-	VICADDRESS = 0;
-}
-

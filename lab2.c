@@ -1,152 +1,137 @@
-// Lab2 buttons and encoder
-// Copyright (C) 2010 Nikita A Menkovich menkovich@gmail.com
-// git repository can be found on: https://github.com/librarian/arm-labs
-//
-//      This program is free software; you can redistribute it and/or modify
-//      it under the terms of the GNU General Public License as published by
-//      the Free Software Foundation; either version 2 of the License, or
-//      (at your option) any later version.
-//
-//      This program is distributed in the hope that it will be useful,
-//      but WITHOUT ANY WARRANTY; without even the implied warranty of
-//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//      GNU General Public License for more details.
-//
-//      You should have received a copy of the GNU General Public License
-//      along with this program; if not, write to the Free Software
-//      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//      MA 02110-1301, USA.
+#include "includes.h";
 
-
-#include "includes.h"
-
-int ENCA_cur, ENCA_prev; // pin A encoder state
-int ENCB_cur, ENCB_prev; // pin B encoder state
-int BTN_cur, BTN_prev; // pin btn status
-void main (void)
+void Delay(int value)
 {
-	SCS |= 0x01;
-	FIO0DIR = 0x00000000;
-	FIO2DIR = 0x00FF;
-	FIO2MASK = 0;
+    for(int j = 0; j < value; j++)
+      for(int i = 0; i < 10; i++)
+        i = i;
+}
+
+int ENCA_cur, ENCA_prev; //Глобальные переменные текущего и предыдущего состояний контакта А 
+int ENCB_cur, ENCB_prev; //Глобальные переменные текущего и предыдущего состояний контакта B 
+int BTN1_cur, BTN1_prev, BTN2_cur, BTN2_prev,BTN3_cur, BTN3_prev, BTN4_cur, BTN4_prev; //Глобальные переменные текущего и предыдущего состояний
+ 
+void main (void)
+{         
+        int a=1;//само число
+        int direction=1;//1-влево  0-вправо
+	int move=1;//Если 1 движение, если 0 остановка 
+        int i = 2;
+        
+ 	// Настроить порт
+	SCS |= 0x01; //Разрешить быстрый ввод/вывод
+
+	FIO0DIR = 0x00000000; // Все разряды порта 0 на ввод для чтения состояния кнопок и энкодера
+	FIO0MASK = 0; //Все разряды порта 0 работают в быстром режиме
+
+	FIO2DIR = 0x00FF; // Биты 0-7 порта 2 на вывод для управления светодиодами
+	FIO2MASK = 0; //Все разряды порта 2 работают в быстром режиме
+
+	ENCA_cur = ENCA_prev = (FIO0PIN & 0x00000800) >> 11; //Чтение начального состояния контакта А энкодера (P0.11)
+	ENCB_cur = ENCB_prev = (FIO0PIN & 0x00200000) >> 21; //Чтение начального состояния контакта B энкодера (P0.21)
+	BTN1_cur = BTN1_prev = FIO0PIN & 0x0020; //Чтение начального состояния кнопки 1
+        BTN2_cur = BTN2_prev = FIO0PIN & 0x0040; //Чтение начального состояния кнопки 2
+        BTN2_cur = BTN2_prev = FIO0PIN & 0x0080; //Чтение начального состояния кнопки 3
+        BTN2_cur = BTN2_prev = FIO0PIN & 0x0200; //Чтение начального состояния кнопки 4
+                 
 	while (1)//Loop forever
 	{
-		int a;
-		int freeze;
-		int status;
-		int top, left, right, bottom;
-		int memory; // variable that set from which step we will begin scale;
-		int speed;
-		int delay;
-		left = getBTNState(1);
-		top	= getBTNState(2);
-		if(!memory) memory = 1; //in the beggining memory os not set
-		if(!speed) speed = 1;
-		if (left) // btn 1 pressed
-		{
-			a = memory; // set step
-			while (a <= 9) // infinite loop, really
-			{
-				status = GetEncState(); // take status of encoder
-				top	= getBTNState(2); // stop or not?
-				if (status == 1) speed++; // speed increase
-				if (status == -1) speed--; // speed decrease
-				delay = 1000*speed; // set delay between taking status, turning on lights, etc
-				// BUG:
-				// It is better to realise getting status on interrupts, because
-				// we will get it only when delay ended
-				FIO2PIN = Scale(a);
-				Delay(delay);
-				if (top) // btn 2 pressed
-				{
-					memory = a; // remember step we are stopped
-					break; // get out of loop
-				}
-				a++;
-				if (a == 8) a = 1; // if we on the end of scale, we will move to begin of it
-			}
+          if( GetBtn1State() ){move = 0;}
+	  if( GetBtn2State() ) {move = 1;}
+	  if(GetBtn3State()){direction=!direction;}//Меняем направление
+	  if(GetBtn4State()){direction=!direction;}//Меняем направление
+          
+          switch(GetEncState())
+		{	case 1://УСКОРЕНИЕ
+				i=i++;
+				break;
+			case -1://ЗАМЕДЛЕНИЕ
+				i=i--;
+				break;                             
+                 }
+          
+          if(move)
+		{	if(direction){a<<=1;}
+			else{a>>=1;}
 		}
-		Delay(1); // immediate start if button pressed
-	}
+		if((a & 0x0100) && direction){a=1;}//ловим крайнее левое состояние и смещаем "каретку"
+		if((!a) && !direction){a=0x0080;}//ловим крайнее правое состояние и смещаем "каретку"
+		FIO2PIN = a;//Вывод на светодиоды
+                Delay(i*10000);
+	}        
 }
 int GetEncState()
 {
 	int state = 0;
 
-	ENCA_cur = (FIO0PIN & 0x00000800) >> 11; //Р§С‚РµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ РєРѕРЅС‚Р°РєС‚Р° Рђ СЌРЅРєРѕРґРµСЂР° (P0.11)
-	ENCB_cur = (FIO0PIN & 0x00200000) >> 21; //Р§С‚РµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ РєРѕРЅС‚Р°РєС‚Р° B СЌРЅРєРѕРґРµСЂР° (P0.21)
+	ENCA_cur = (FIO0PIN & 0x00000800) >> 11; //Чтение текущего состояния контакта А энкодера (P0.11)
+	ENCB_cur = (FIO0PIN & 0x00200000) >> 21; //Чтение текущего состояния контакта B энкодера (P0.21)
 
-	if( (ENCA_cur != ENCA_prev) )	//Р•СЃР»Рё СЃРѕСЃС‚РѕСЏРЅРёРµ РєРѕРЅС‚Р°РєС‚Р° Рђ СЌРЅРєРѕРґРµСЂР° РёР·РјРµРЅРёР»РѕСЃСЊ
+	if( (ENCA_cur != ENCA_prev) )	//Если состояние контакта А энкодера изменилось
 	{
-		if( !ENCA_cur )		//Р•СЃР»Рё С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РєРѕРЅС‚Р°РєС‚Р° Рђ СЌРЅРєРѕРґРµСЂР° - 0 (РїРµСЂРµС…РѕРґ РёР· 1)
+		if( !ENCA_cur ) //Если текущее состояние контакта А энкодера - 0 (переход из 1)
 		{
-			if( !ENCB_cur )	//Р•СЃР»Рё С‚РµРєСѓС‰РµРµ РєРѕРЅС‚Р°РєС‚Р° B СЌРЅРєРѕРґРµСЂР° - 0
-				state = 1;	//РџРµСЂРµРјРµРЅРЅР°СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ РІСЂР°С‰РµРЅРёРµ РїРѕ С‡Р°СЃРѕРІРѕР№
+			if( !ENCB_cur ) //Если текущее контакта B энкодера - 0
+				state = 1; //Переменная состояния означает, что вращение по часовой
 			else
-				state = -1;	//РџРµСЂРµРјРµРЅРЅР°СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ РІСЂР°С‰РµРЅРёРµ РїСЂРѕС‚РёРІ С‡Р°СЃРѕРІРѕР№
+				state = -1; //Переменная состояния означает, что вращение против часовой
 		}
-		else				//Р•СЃР»Рё С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РєРѕРЅС‚Р°РєС‚Р° Рђ СЌРЅРєРѕРґРµСЂР° - 1 (РїРµСЂРµС…РѕРґ РёР· 0)
+		else	//Если текущее состояние контакта А энкодера - 1 (переход из 0)
 		{
-			if( ENCB_cur )	//Р•СЃР»Рё С‚РµРєСѓС‰РµРµ РєРѕРЅС‚Р°РєС‚Р° B СЌРЅРєРѕРґРµСЂР° - 1
-				state = 1;	//РџРµСЂРµРјРµРЅРЅР°СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ РІСЂР°С‰РµРЅРёРµ РїРѕ С‡Р°СЃРѕРІРѕР№
+			if( ENCB_cur ) //Если текущее контакта B энкодера - 1
+				state = 1; //Переменная состояния означает, что вращение по часовой
 			else
-				state = -1;	//РџРµСЂРµРјРµРЅРЅР°СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ РІСЂР°С‰РµРЅРёРµ РїСЂРѕС‚РёРІ С‡Р°СЃРѕРІРѕР№
+				state = -1; //Переменная состояния означает, что вращение против часовой
 		}
-	}
-
-	ENCA_prev = ENCA_cur;	//РўРµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ СЃРѕС…СЂР°РЅСЏРµС‚СЃСЏ РІ РїРµСЂРµРјРµРЅРЅС‹С…,
-							//РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РїСЂРµРґС‹РґСѓС‰РёРјРё РІ СЃР»РµРґСѓСЋС‰РµРј С†РёРєР»Рµ РїСЂРѕРІРµСЂРєРё
+      
+	ENCA_prev = ENCA_cur;//Текущее состояние сохраняется в переменных,
+				//которые будут предыдущими в следующем цикле проверки
 	ENCB_prev = ENCB_cur;
 
-	return state;	//Р’РѕР·РІСЂР°С‰Р°РµРј СЃРѕСЃС‚РѕСЏРЅРёРµ 0 РµСЃР»Рё СЌРЅРєРѕРґРµСЂ РЅРµ РІСЂР°С‰Р°РµС‚СЃСЏ,
-					//1 РµСЃР»Рё РІСЂР°С‰Р°РµС‚СЃСЏ РїРѕ С‡Р°СЃРѕРІРѕР№ Рё -1 РµСЃР»Рё РїСЂРѕС‚РёРІ С‡Р°СЃРѕРІРѕР№
-}
-
-int getBTNState(int btn)
+	return state; //Возвращаем состояние 0 если энкодер не вращается, 
+					//1 если вращается по часовой и -1 если против часовой
+        }}
+int GetBtn1State()
 {
 	int state = 0;
-	switch (btn)
+	BTN1_cur = FIO0PIN & 0x0020; // Порт Po -5
+	if( BTN1_cur != BTN1_prev) //Если состояние изменилось
 	{
-		case 1:
-			BTN_cur = FIO0PIN & 0x0020; // button 1
-		case 2:
-			BTN_cur = FIO0PIN & 0x0040; // button 2
-		case 3:
-			BTN_cur = FIO0PIN & 0x0080; // button 3
-		case 4:
-			BTN_cur = FIO0PIN & 0x0200; // button 4
-		default:
-			BTN_cur = FIO0PIN & 0x0020; // default button 1
+		if( !BTN1_cur ){state = 1;}//Кнопка нажата а не отпущена
 	}
-	if( BTN_cur != BTN_prev) // state changed
-	{
-		if( !BTN_cur ) // if zero, button pressed
-			state = 1;
-	}
-	BTN_prev = BTN_cur;	 // remember current button state
-	return state; // 0 if do not pressed, 1 if pressed
+	BTN1_prev = BTN1_cur;
+	return state;
 }
-
-
-int Scale(int counter)
+int GetBtn2State()
 {
-	int a;
-	int result = 0x00;
-	int result_prev = 0x03;
-	for (a=1; a<=counter; a++)
+	int state = 0;
+	BTN2_cur = FIO0PIN & 0x0040; // Порт Po -6
+	if( BTN2_cur != BTN2_prev) //Если состояние изменилось
 	{
-		result = result+result_prev;
-		result_prev= result;
+		if( !BTN2_cur ){state = 1;}//Кнопка нажата а не отпущена
 	}
-	return result;
+	BTN2_prev = BTN2_cur;
+	return state;
 }
-
-double power(double x, long n) //rescursive power() function from wiki
+int GetBtn3State()
 {
-	double tmp;
-	if(n == 0) return 1;
-	if(n < 0) return power ( 1 / x, -n);
-	if(n % 2) return x * power (x, n - 1);
-	return power(x * x, n / 2);
- }
-
+	int state = 0;
+	BTN3_cur = FIO0PIN & 0x0080; // Порт Po -7
+	if( BTN3_cur != BTN3_prev) //Если состояние изменилось
+	{
+		if( !BTN3_cur ){state = 1;}//Кнопка нажата а не отпущена
+	}
+	BTN3_prev = BTN3_cur;
+	return state;
+}
+int GetBtn4State()
+{
+	int state = 0;
+	BTN4_cur = FIO0PIN & 0x0200; // Порт Po -9
+	if( BTN4_cur != BTN4_prev) //Если состояние изменилось
+	{
+		if( !BTN4_cur ){state = 1;}//Кнопка нажата а не отпущена
+	}
+	BTN4_prev = BTN4_cur;
+	return state;
+}
