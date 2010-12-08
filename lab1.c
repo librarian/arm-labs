@@ -101,7 +101,7 @@ void main (void)
 				{
 					Delay( delay );
 					FIO2PIN = memory+inc;
-					inc=inc*0x02;
+					inc= inc << 1; // it is much more faster than inc*2
 				}
 				memory = FIO2PIN; // here we remember current lamp state after cycle
 				max--; // decrease total iterations of cycle
