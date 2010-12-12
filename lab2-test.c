@@ -106,10 +106,10 @@ void main (void)
 		switch ( GetEncState() )
 		{
 			case 1:			// nd4spd
-				i = i++;
+				speed = speed++;
 				break;
 			case -1:		// nd4slw
-				i = i--;
+				speed = speed--;
 				break;
 		}
 		if ( move )
@@ -121,6 +121,6 @@ void main (void)
 		if ( ( !a ) && !direction ) a = 0x0080;		// catch right and revert
 		
 		FIO2PIN = a; // stdout
-		Delay(i*1000); // delay nearly to 1 sec
+		Delay(speed*1000); // delay nearly to 1 sec
 	}
 }
